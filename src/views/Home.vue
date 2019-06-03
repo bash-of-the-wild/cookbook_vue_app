@@ -26,10 +26,20 @@
     <h1>All Recipes</h1>
 
     <div v-for="recipe in recipes">
-      <h2>Title: {{ recipe.title }}</h2>
-      <p>Ingredients: {{ recipe.ingredients }}</p>
-      <p>Directions: {{ recipe.directions }}</p>
       <img v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
+      <h2>Title: {{ recipe.title }}</h2>
+      <div v-if="currentRecipe === recipe">
+        <h3>Prep Time: recipe.formatted.prep_time</h3>
+        <p>Ingredients: </p>
+        <ul>
+          <li v-for="ingredient in recipe.formatted.ingredients">{{ ingredient }}</li>
+        </ul>
+        <p>Directions: </p>
+        <ol>
+          <li v-for="direction in recipe.formatted.directions">{{ direction }}</li>
+        </ol>
+      </div>
+      <button v-on:click="currentRecipe = recipe">More Info</button>
     </div>
   </div>
 </template>
@@ -51,12 +61,25 @@ export default {
       newRecipePrepTime: "",
       newRecipeIngredients: "",
       newRecipeDirections: "",
-      newRecipeImageUrl: ""
+      newRecipeImageUrl: "",
+      currentRecipe: {
+                      title: "",
+                      prep_time: "",
+                      directions: "",
+                      ingredients: "",
+                      image_url: "",
+                      formatted: {
+                                  created_at: "",
+                                  ingredients: [],
+                                  directions: [],
+                                  prep_time: ""
+                                  }
+                      }
     };
   },
   created: function() {
     // web request to api
-    axios.get("http://localhost:3000/api/recipes").then(response => {
+    axios.get("/api/recipes").then(response => {
       this.recipes = response.data;
     });
   },
@@ -72,7 +95,7 @@ export default {
                      image_url: this.newRecipeImageUrl
                     };
 
-      axios.post("http://localhost:3000/api/recipes", params).then(response => {
+      axios.post("/api/recipes", params).then(response => {
         console.log("Success", response.data);
         this.recipes.push(response.data);
 
