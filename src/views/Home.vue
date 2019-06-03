@@ -60,6 +60,8 @@
 
           <button v-on:click="updateRecipe(recipe)">Update</button>
         </div>
+
+        <button v-on:click="destroyRecipe(recipe)">Destroy</button>
       </div>
 
       <button v-on:click="showRecipe(recipe)">More Info</button>
@@ -147,6 +149,13 @@ export default {
 
       axios.patch("/api/recipes/" + inputRecipe.id, params).then(response => {
         console.log("Success", response.data);
+      });
+    },
+    destroyRecipe: function(inputRecipe) {
+      axios.delete("/api/recipes/" + inputRecipe.id).then(response => {
+        console.log("Success", response.data);
+        var index = this.recipes.indexOf(inputRecipe);
+        this.recipes.splice(index, 1);
       });
     }
   }
