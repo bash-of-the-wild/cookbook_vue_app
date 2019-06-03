@@ -28,6 +28,7 @@
     <div v-for="recipe in recipes">
       <img v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
       <h2>Title: {{ recipe.title }}</h2>
+
       <div v-if="currentRecipe === recipe">
         <h3>Prep Time: recipe.formatted.prep_time</h3>
         <p>Ingredients: </p>
@@ -38,8 +39,30 @@
         <ol>
           <li v-for="direction in recipe.formatted.directions">{{ direction }}</li>
         </ol>
+
+        <h3>Edit Recipe</h3>
+        <div>
+          <div>
+            Title: <input v-model="recipe.title">
+          </div>
+          <div>
+            Prep Time: <input v-model="recipe.prep_time">
+          </div>
+          <div>
+            Ingredients: <input v-model="recipe.ingredients">
+          </div>
+          <div>
+            Directions: <input v-model="recipe.directions">
+          </div>
+          <div>
+            Image URL: <input v-model="recipe.image_url">
+          </div>
+
+          <button v-on:click="updateRecipe(recipe)">Update</button>
+        </div>
       </div>
-      <button v-on:click="currentRecipe = recipe">More Info</button>
+
+      <button v-on:click="showRecipe(recipe)">More Info</button>
     </div>
   </div>
 </template>
@@ -104,6 +127,26 @@ export default {
         this.newRecipeIngredients = "";
         this.newRecipeDirections = "";
         this.newRecipeImageUrl = "";
+      });
+    },
+    showRecipe: function(inputRecipe) {
+      if (this.currentRecipe === inputRecipe) {
+        this.currentRecipe = {};
+      } else {
+        this.currentRecipe = inputRecipe;
+      }
+    },
+    updateRecipe: function(inputRecipe) {
+      var params = {
+                     title: inputRecipe.title,
+                     prep_time: inputRecipe.prep_time,
+                     ingredients: inputRecipe.ingredients,
+                     directions: inputRecipe.directions,
+                     image_url: inputRecipe.image_url
+                    };
+
+      axios.patch("/api/recipes/" + inputRecipe.id, params).then(response => {
+        console.log("Success", response.data);
       });
     }
   }
