@@ -27,7 +27,7 @@
 
     <div v-for="recipe in recipes">
       <img v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
-      <h2>Title: {{ recipe.title }}</h2>
+      <h2><router-link v-bind:to="'/recipes/' + recipe.id">Title: {{ recipe.title }}</router-link></h2>
 
       <div v-if="currentRecipe === recipe">
         <h3>Prep Time: recipe.formatted.prep_time</h3>
