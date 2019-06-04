@@ -1,27 +1,36 @@
 <template>
   <div class="recipes-new">
     <h1>New Recipe</h1>
-    <div>
-      Title: <input v-model="newRecipeTitle">
-    </div>
 
-    <div>
-      Prep Time: <input v-model="newRecipePrepTime">
-    </div>
+    <ul>
+      <li v-for="error in errors">
+        {{ error }}
+      </li>
+    </ul>
 
-    <div>
-      Ingredients: <input v-model="newRecipeIngredients">
-    </div>
+    <form v-on:submit.prevent="submit()">
+      <div>
+        Title: <input v-model="newRecipeTitle">
+      </div>
 
-    <div>
-      Directions: <input v-model="newRecipeDirections">
-    </div>
+      <div>
+        Prep Time: <input v-model="newRecipePrepTime">
+      </div>
 
-    <div>
-      Image URL: <input v-model="newRecipeImageUrl">
-    </div>
+      <div>
+        Ingredients: <input v-model="newRecipeIngredients">
+      </div>
 
-    <button v-on:click="createRecipe()">Create</button>
+      <div>
+        Directions: <input v-model="newRecipeDirections">
+      </div>
+
+      <div>
+        Image URL: <input v-model="newRecipeImageUrl">
+      </div>
+
+      <input type="submit" value="Create Recipe">
+    </form>
   </div>
 </template>
 
@@ -38,26 +47,29 @@ export default {
       newRecipePrepTime: "",
       newRecipeIngredients: "",
       newRecipeDirections: "",
-      newRecipeImageUrl: ""
+      newRecipeImageUrl: "",
+      errors: []
     };
   },
   created: function() {},
   methods: {
-    createRecipe: function() {
-                  console.log("Create the recipe...");
+    submit: function() {
+        console.log("Create the recipe...");
 
-                  var params = {
-                                 title: this.newRecipeTitle,
-                                 prep_time: this.newRecipePrepTime,
-                                 ingredients: this.newRecipeIngredients,
-                                 directions: this.newRecipeDirections,
-                                 image_url: this.newRecipeImageUrl
-                                };
+        var params = {
+                       title: this.newRecipeTitle,
+                       prep_time: this.newRecipePrepTime,
+                       ingredients: this.newRecipeIngredients,
+                       directions: this.newRecipeDirections,
+                       image_url: this.newRecipeImageUrl
+                      };
 
-                  axios.post("/api/recipes", params).then(response => {
-                    this.$router.push("/");
-                  });
-                }
+        axios.post("/api/recipes", params).then(response => {
+          this.$router.push("/");
+        }).catch(error => {
+          this.errors = error.response.data.errors;
+        });
+      }
   }
 };
 </script>
