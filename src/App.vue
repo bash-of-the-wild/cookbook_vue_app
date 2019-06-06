@@ -14,11 +14,14 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <router-link class="dropdown-item" to="/recipes/new">New Recipe</router-link>
+              <router-link class="dropdown-item" to="/signup">Signup</router-link>
+              <router-link class="dropdown-item" to="/login">Log In</router-link>
+              <router-link class="dropdown-item" to="/logout">Logout</router-link>
             </div>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-model="titleFilter">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
@@ -31,3 +34,13 @@
 <style>
 
 </style>
+
+<script>
+  export default {
+    data: function() {
+      return {
+        titleFilter: ""
+      };
+    }
+  }
+</script>

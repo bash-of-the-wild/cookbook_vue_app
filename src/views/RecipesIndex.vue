@@ -1,10 +1,17 @@
 <template>
   <div class="recipes-index">
-    <h1>All Recipes</h1>
+    <div class="container">
+      <h1>All Recipes</h1>
+      <div>
+        Search by Title: <input v-model="$parent.titleFilter">
+      </div>
 
-    <div v-for="recipe in recipes">
-      <img class="index-recipes-img" v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
-      <h2><router-link v-bind:to="'/recipes/' + recipe.id">{{ recipe.title }}</router-link></h2>
+      <div class="row mt-5">
+        <div class="col-md-4" v-for="recipe in filterBy(recipes, $parent.titleFilter, 'title')">
+          <img class="index-recipes-img" v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
+          <h2><router-link v-bind:to="'/recipes/' + recipe.id">{{ recipe.title }}</router-link></h2>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -16,6 +23,7 @@ img.index-recipes-img {
 </style>
 
 <script>
+import Vue2Filters from 'vue2-filters';
 var axios = require('axios');
 
 export default {
@@ -29,6 +37,7 @@ export default {
       this.recipes = response.data;
     });
   },
-  methods: {}
+  methods: {},
+  mixins: [Vue2Filters.mixin]
 };
 </script>
