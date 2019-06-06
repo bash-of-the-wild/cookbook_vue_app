@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import RecipesTableIndex from './views/RecipesTableIndex.vue';
+
 import RecipesIndex from './views/RecipesIndex.vue';
 import RecipesNew from './views/RecipesNew.vue';
 import RecipesShow from './views/RecipesShow.vue';
@@ -17,6 +19,8 @@ export default new Router({
   hash: false,
   routes: [
     {path: '/', name: 'home', component: RecipesIndex },
+
+    {path: '/recipes/table', name: 'recipes-table-index', component: RecipesTableIndex },
 
     {path: '/recipes', name: 'recipes-index', component: RecipesIndex },
     {path: '/recipes/new', name: 'recipes-new', component: RecipesNew },

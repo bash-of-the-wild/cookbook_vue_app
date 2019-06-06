@@ -7,17 +7,24 @@
       </div>
 
       <div>
-        <button class="btn btn-dark m-1" v-on:click="setSortAttribute('title')">Sort by Title</button>
-        <button class="btn btn-dark m-1" v-on:click="setSortAttribute('prep_time')">Sort by Prep Time</button>
+        <button class="btn btn-dark m-1" v-on:click="setSortAttribute('title')">
+          {{ isAscending('title') }} 
+          Sort by Title
+        </button>
+        <button class="btn btn-dark m-1" v-on:click="setSortAttribute('prep_time')">
+          <span v-if="sortAttribute === 'prep_time' && sortAscending === 1 ">^</span> 
+          <span v-else-if="sortAttribute === 'prep_time' && sortAscending === -1 ">v</span> 
+          Sort by Prep Time
+        </button>
       </div>
 
-      <div class="row mt-5">
-        <div class="col-sm-4" v-for="recipe in orderBy(filterBy(recipes, titleFilter, 'title'), sortAttribute, sortAscending)">
+      <transition-group appear enter-active-class="animated bounceInDown" leave-active-class="animated fadeOut" class="row mt-5">
+        <div class="col-sm-4" v-for="recipe in orderBy(filterBy(recipes, titleFilter, 'title'), sortAttribute, sortAscending)" v-bind:key="recipe.id">
           <img class="index-recipes-img" v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
           <h2><router-link v-bind:to="'/recipes/' + recipe.id">{{ recipe.title }}</router-link></h2>
           <p>{{recipe.prep_time}}</p>
         </div>
-      </div>
+      </transition-group>
     </div>
   </div>
 </template>
@@ -53,8 +60,13 @@ export default {
       } else {
         this.sortAscending = 1;
       }
-      
+
       this.sortAttribute = inputAttribute;
+    },
+    isAscending: function(inputAttribute) {
+      if (this.sortAttribute === inputAttribute) {
+        return this.sortAscending === 1 ? "^" : "v";
+      }
     }
   },
   mixins: [Vue2Filters.mixin]
