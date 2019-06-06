@@ -12,7 +12,7 @@
       </div>
 
       <div class="row mt-5">
-        <div class="col-sm-4" v-for="recipe in orderBy(filterBy(recipes, titleFilter, 'title'), sortAttribute)">
+        <div class="col-sm-4" v-for="recipe in orderBy(filterBy(recipes, titleFilter, 'title'), sortAttribute, sortAscending)">
           <img class="index-recipes-img" v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
           <h2><router-link v-bind:to="'/recipes/' + recipe.id">{{ recipe.title }}</router-link></h2>
           <p>{{recipe.prep_time}}</p>
@@ -37,7 +37,8 @@ export default {
     return {
       recipes: [],
       titleFilter: "",
-      sortAttribute: "title"
+      sortAttribute: "title",
+      sortAscending: 1
     };
   },
   created: function() {
@@ -47,6 +48,12 @@ export default {
   },
   methods: {
     setSortAttribute: function(inputAttribute) {
+      if (this.sortAttribute === inputAttribute) {
+        this.sortAscending *= -1;
+      } else {
+        this.sortAscending = 1;
+      }
+      
       this.sortAttribute = inputAttribute;
     }
   },
