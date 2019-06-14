@@ -3,8 +3,8 @@ import App from './App.vue'
 import router from './router'
 import axios from "axios";
 
-axios.defaults.baseURL = 
-  process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
+axios.defaults.baseURL = "https://secure-bayou-52007.herokuapp.com";
+  // process.env.NODE_ENV === "development" ? "https://secure-bayou-52007.herokuapp.com" : "/";
 
 var jwt = localStorage.getItem("jwt");
 if (jwt) {

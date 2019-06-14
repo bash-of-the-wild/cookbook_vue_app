@@ -18,7 +18,7 @@
         </button>
       </div>
 
-      <transition-group appear enter-active-class="animated bounceInDown" leave-active-class="animated fadeOut" class="row mt-5">
+      <transition-group appear enter-active-class="animated bounceInDown" leave-active-class="animated bounceOut" class="row mt-5">
         <div class="col-sm-4" v-for="recipe in orderBy(filterBy(recipes, titleFilter, 'title'), sortAttribute, sortAscending)" v-bind:key="recipe.id">
           <img class="index-recipes-img" v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
           <h2><router-link v-bind:to="'/recipes/' + recipe.id">{{ recipe.title }}</router-link></h2>
