@@ -18,6 +18,7 @@
 
           <router-link class="btn btn-warning m-1" v-bind:to=" '/recipes/' + recipe.id + '/edit' ">Edit</router-link>
           <button class="btn btn-my-color m-1" v-on:click="destroyRecipe()">Delete</button>
+          <router-link v-bind:to="'/recipes/' + (recipe.id + 1)" class="btn btn-success">Next</router-link>
         </div>
         <div class="col-sm-6">
           <img v-bind:src="recipe.image_url" class="img-fluid show-recipe-img">
@@ -26,7 +27,6 @@
     </div> <!-- end of .container -->
 
     
-
 
   </div>
 </template>
@@ -73,6 +73,13 @@ export default {
         this.$router.push("/");
       });
     }
+  },
+  beforeRouteUpdate: function(to, from, next) {
+    axios.get("/api/recipes/" + to.params.id ).then(response => {
+      this.recipe = response.data;
+    });
+
+    next();
   }
 };
 </script>
